@@ -18,17 +18,6 @@ A simple bulletin board app with signup, login, and a global message feed.
    npm start
    ```
 
-## Railway deployment
-
-1. Push this project to GitHub.
-2. Create a new Railway project and connect the repository.
-3. Add the following environment variables in Railway:
-   - `NODE_ENV=production`
-   - `PORT=3000`
-   - `SESSION_SECRET=<a strong random secret>`
-   - `DATABASE_URL=<your Railway PostgreSQL connection string>`
-4. Railway will run `npm start` automatically using the included `railway.json` config.
-
 ## Notes
 
 - The app creates its required tables on startup if they do not already exist.
