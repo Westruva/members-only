@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Members Only | Sign up</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page-shell narrow-shell">
+      <section class="panel auth-panel">
+        <h1>Sign up</h1>
+
+        <% if (flash && flash.length) { %>
+          <div class="flash-list">
+            <% flash.forEach((item) => { %>
+              <div class="flash <%= item.type %>"><%= item.message %></div>
+            <% }) %>
+          </div>
+        <% } %>
+
+        <form action="/signup" method="POST" class="auth-form">
+          <label>
+            Username
+            <input type="text" name="username" placeholder="Choose a username" required />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            Password
+            <input type="password" name="password" placeholder="Minimum 6 characters" required />
+          </label>
+          <label>
+            Confirm password
+            <input type="password" name="confirmPassword" placeholder="Re-enter your password" required />
+          </label>
+          <button type="submit">Create account</button>
+        </form>
+
+        <p class="auth-switch">
+          Already a member?
+          <a href="/login">Log in</a>
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

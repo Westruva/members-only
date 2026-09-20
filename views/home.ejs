@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Members Only | Home</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Community board</p>
+          <h1>Members Only</h1>
+        </div>
+
+        <% if (user) { %>
+          <div class="user-panel">
+            <span>Signed in as <strong><%= user.username %></strong></span>
+            <form action="/logout" method="POST">
+              <button type="submit" class="ghost-button">Log out</button>
+            </form>
+          </div>
+        <% } else { %>
+          <nav class="auth-links" aria-label="Authentication links">
+            <a href="/login">Login</a>
+            <a href="/signup">Sign up</a>
+          </nav>
+        <% } %>
+      </header>
+
+      <% if (flash && flash.length) { %>
+        <div class="flash-list">
+          <% flash.forEach((item) => { %>
+            <div class="flash <%= item.type %>"><%= item.message %></div>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <% if (!user) { %>
+        <section class="panel welcome-panel">
+          <h2>Join the conversation</h2>
+          <p>
+            Create an account or log in to share your thoughts with everyone.
+          </p>
+          <div class="cta-row">
+            <a class="button-link" href="/signup">Create account</a>
+            <a class="button-link secondary" href="/login">Log in</a>
+          </div>
+        </section>
+      <% } else { %>
+        <section class="panel composer">
+          <h2>Share with the community</h2>
+          <form action="/messages" method="POST" class="message-form">
+            <textarea
+              name="content"
+              rows="4"
+              placeholder="Write a message for everyone..."
+              required
+            ></textarea>
+            <button type="submit">Post message</button>
+          </form>
+        </section>
+      <% } %>
+
+      <section class="panel feed">
+        <div class="feed-header">
+          <h2>Latest messages</h2>
+        </div>
+
+        <% if (!messages || messages.length === 0) { %>
+          <p class="empty-state">No messages yet. Be the first to post.</p>
+        <% } else { %>
+          <ul class="message-list">
+            <% messages.forEach((message) => { %>
+              <li class="message-item">
+                <div class="message-meta">
+                  <% if (user) { %>
+                    <strong><%= message.username %></strong>
+                  <% } else { %>
+                    <strong></strong>
+                  <% } %>
+                  <span><%= new Date(message.created_at).toLocaleString() %></span>
+                </div>
+                <p><%= message.content %></p>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </section>
+    </main>
+  </body>
+</html>

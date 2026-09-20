@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Members Only</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Community board</p>
+          <h1>Members Only</h1>
+        </div>
+
+        <% if (user) { %>
+          <div class="user-panel">
+            <span>Signed in as <strong><%= user.username %></strong></span>
+            <form action="/logout" method="POST">
+              <button type="submit" class="ghost-button">Log out</button>
+            </form>
+          </div>
+        <% } %>
+      </header>
+
+      <% if (flash && flash.length) { %>
+        <div class="flash-list">
+          <% flash.forEach((item) => { %>
+            <div class="flash <%= item.type %>">
+              <%= item.message %>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <% if (!user) { %>
+        <section class="auth-grid">
+          <div class="panel">
+            <h2>Create account</h2>
+            <form action="/signup" method="POST" class="auth-form">
+              <label>
+                Username
+                <input type="text" name="username" placeholder="Choose a username" required />
+              </label>
+              <label>
+                Email
+                <input type="email" name="email" placeholder="you@example.com" required />
+              </label>
+              <label>
+                Password
+                <input type="password" name="password" placeholder="Minimum 6 characters" required />
+              </label>
+              <button type="submit">Sign up</button>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2>Login</h2>
+            <form action="/login" method="POST" class="auth-form">
+              <label>
+                Username or email
+                <input type="text" name="username" placeholder="Username or email" required />
+              </label>
+              <label>
+                Password
+                <input type="password" name="password" placeholder="Your password" required />
+              </label>
+              <button type="submit">Log in</button>
+            </form>
+          </div>
+        </section>
+      <% } else { %>
+        <section class="panel composer">
+          <h2>Share with the community</h2>
+          <form action="/messages" method="POST" class="message-form">
+            <textarea
+              name="content"
+              rows="4"
+              placeholder="Write a message for everyone..."
+              required
+            ></textarea>
+            <button type="submit">Post message</button>
+          </form>
+        </section>
+      <% } %>
+
+      <section class="panel feed">
+        <div class="feed-header">
+          <h2>Latest messages</h2>
+        </div>
+
+        <% if (!messages || messages.length === 0) { %>
+          <p class="empty-state">No messages yet. Be the first to post.</p>
+        <% } else { %>
+          <ul class="message-list">
+            <% messages.forEach((message) => { %>
+              <li class="message-item">
+                <div class="message-meta">
+                  <strong><%= message.username %></strong>
+                  <span><%= new Date(message.created_at).toLocaleString() %></span>
+                </div>
+                <p><%= message.content %></p>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </section>
+    </main>
+  </body>
+</html>
